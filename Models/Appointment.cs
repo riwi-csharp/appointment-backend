@@ -21,7 +21,8 @@ namespace appointment_backend.Models
         [DataType(DataType.DateTime)]
         public DateTime? Date { get; set; }
 
-        public string Status { get; set; } = "Scheduled";
+        public int StatusId { get; set; }
+        public AppointmentStatus Status { get; set; }
 
         public string? Notes { get; set; }
     }

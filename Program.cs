@@ -1,6 +1,4 @@
-using appointment_backend.Models.Email;
-using appointment_backend.Services;
-using MedicalSys.Data;
+using appointment_backend.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
