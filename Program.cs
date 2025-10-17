@@ -1,3 +1,5 @@
+using appointment_backend.Models.Email;
+using appointment_backend.Services;
 using MedicalSys.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("EmailSettings"));
+
+builder.Services.AddScoped<EmailService>();
+
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionString,  ServerVersion.AutoDetect(connectionString)) );
 
 var app = builder.Build();
