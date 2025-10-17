@@ -1,0 +1,106 @@
+@model  IEnumerable<appointment_backend.Models.Patient>
+
+@{
+    ViewData["Title"] = "Patient Details";
+}
+<h1>Gestion Pacientes</h1>
+
+<style>
+    :root {
+        --main-blue: #007bff; 
+    }
+
+    .btn-main {
+        background-color: lightseagreen;
+        color: white;
+        border: none;
+        transition: 0.3s ease;
+    }
+
+    .btn-main:hover {
+        background-color: #0056b3; 
+    }
+
+    .btn-action {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px 
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header text-white" style="background-color: lightseagreen;">
+            <div class="d-flex justify-content-between align-items-center">
+                <h3 class="mb-0"><i class="bi bi-people-fill"></i> Gestión de Pacientes</h3>
+                <a asp-action="Register" class="btn btn-light fw-bold">
+                    <i class="bi bi-person-plus"></i> Nuevo Paciente
+                </a>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary shadow-sm">
+                    ⬅️ Volver al Inicio
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <table class="table table-striped table-hover text-center align-middle shadow-sm">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Documento</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Edad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var patient in Model)
+                    {
+                        <tr>
+                            <td>@patient.Name</td>
+                            <td>@patient.Document</td>
+                            <td>@patient.Phone</td>
+                            <td>@patient.Email</td>
+                            <td>@patient.Age</td>
+                            <td>
+                                <div class="d-flex justify-content-center gap-2">
+
+                                    <a asp-action="Details" asp-route-id="@patient.Id"
+                                       class="btn btn-main btn-action"
+                                       title="Detalles">
+                                        👁️
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+
+                                    <a asp-action="Edit" asp-route-id="@patient.Id"
+                                       class="btn btn-main btn-action"
+                                       title="Editar">
+                                        ✏️
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+
+                                    <form asp-action="Delete" asp-route-id="@patient.Id" method="post"
+                                          onsubmit="return confirm('¿Seguro que desea eliminar este paciente?');"
+                                          class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-main btn-action"
+                                                title="Eliminar">
+                                            🗑️
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
