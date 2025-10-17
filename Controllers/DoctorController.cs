@@ -1,5 +1,5 @@
+using appointment_backend.Data;
 using appointment_backend.Models;
-using MedicalSys.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -87,7 +87,6 @@ public class DoctorController : Controller
             getDoctor.DocumentType = doctor.DocumentType;
             getDoctor.Phone = doctor.Phone;
             getDoctor.Email = doctor.Email;
-            getDoctor.DoctorSpecialities = doctor.DoctorSpecialities;
             getDoctor.Appointments = doctor.Appointments;
         
             _context.Doctors.Update(getDoctor);

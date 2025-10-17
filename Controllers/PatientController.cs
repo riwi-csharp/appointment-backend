@@ -1,5 +1,5 @@
+using appointment_backend.Data;
 using appointment_backend.Models;
-using MedicalSys.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -30,7 +30,7 @@ public class PatientController : Controller
         {
             Console.WriteLine($"Ocurrio un error inesperado al traer los pacientes\nError: {e}");
             ViewBag.ErrorMessage = "No se pudo cargar la lista de pacientes recargue la pagina";
-            return View(Index)
+            return View(Index);
         }
     }
 
@@ -52,7 +52,7 @@ public class PatientController : Controller
         {
             System.Console.WriteLine($"El paciente no se ha podido guardar el la base de datos\nError{e}");
             ViewBag.ErrorMessage = "No se pudo registrar el paciente, intente de nuevo";
-            return View(patient)
+            return View(patient);
         }
         return RedirectToAction("Index");
     }
