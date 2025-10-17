@@ -123,4 +123,5 @@ public class DoctorController : Controller
             Console.WriteLine(e);
             throw;
         }
+    }
 }
