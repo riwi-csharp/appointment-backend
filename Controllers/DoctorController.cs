@@ -14,17 +14,54 @@ public class DoctorController : Controller
     }
 
     [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        await GetAll();
+        return View();
+    }
+    
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var doctors = await _context.Doctors.ToListAsync();
-        return RedirectToAction("Index", doctors);
+        try
+        {
+            var doctors = await _context.Doctors.ToListAsync();
+            TempData["SuccessMessage"] = "All doctors were found";
+            return RedirectToAction("Index", doctors);
+        }
+        catch (HttpRequestException e)
+        {
+            TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+        }
+        catch (Exception e)
+        {
+            TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+        }
+        return RedirectToAction("Index", null);
     }
 
     [HttpPost]
     public async Task<IActionResult> Create(Doctor doctor)
     {
-        _context.Doctors.Add(doctor);
-        await _context.SaveChangesAsync();
+        try
+        {
+            if (_context.Doctors.AnyAsync(d => d.Document == doctor.Document) != null)
+            {
+                ModelState.AddModelError("DocumentAlreadyExists", "Doctor Document already exists");
+                return RedirectToAction("Index");
+            }
+            _context.Doctors.Add(doctor);
+            await _context.SaveChangesAsync();
+            TempData["SuccessMessage"] = "Doctor was created";
+        }
+        catch (HttpRequestException e)
+        {
+            TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+        }
+        catch (Exception e)
+        {
+            TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+        }
         return RedirectToAction("Index");
     }
 }
