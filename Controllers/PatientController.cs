@@ -33,13 +33,13 @@ public class PatientController : Controller
             return View(Index)
         }
     }
-    
+
     //Registrar un paciente
     //Si el modelo no es valido, vuelve a mostrar la vista del formulario con los mismos datos que el usuario ingreso.
     [HttpPost]
     public async Task<IActionResult> Register(Patient patient)
     {
-        if (!ModelState.IsValid) return View(patient); 
+        if (!ModelState.IsValid) return View(patient);
         if (!AgeValid(patient)) return View(patient);
 
         try
@@ -56,7 +56,7 @@ public class PatientController : Controller
         }
         return RedirectToAction("Index");
     }
-    
+
     //Eliminar un paciente
     [HttpPost]
     public async Task<IActionResult> Delete(int id)
@@ -75,7 +75,7 @@ public class PatientController : Controller
         }
         return RedirectToAction("Index");
     }
-    
+
     //Este busca el paciente por el Id para poder editarlo
     [HttpPost]
     public IActionResult Edit(int id)
@@ -88,7 +88,7 @@ public class PatientController : Controller
         }
         return View(patient);
     }
-    
+
     //Este guarda los cambios al editar un paciente
     [HttpPost]
     public async Task<IActionResult> SaveEdit(Patient patient)
@@ -114,9 +114,30 @@ public class PatientController : Controller
     [HttpPost]
     public bool AgeValid(Patient patient)
     {
+        if (patient.Age == 0 || patient.Age == null)
+        {
+            ModelState.AddModelError("Age", "Debes Ingresar una edad.");
+            return false;
+        }
         if (patient.Age < 1 || patient.Age > 100)
         {
-            ModelState.AddModelError("Age","La edad ingresada no es valida.");
+            ModelState.AddModelError("Age", "La edad ingresada no es valida.");
+            return false;
+        }
+        return true;
+    }
+
+    //Validar de que el numero de telefono tenga 10 digitos exactos y que no ingrese con letras 
+    //Muestra mensaje si intenta registrar un numero en null,vacio o en espacio en blanco
+    public bool PhoneValid(Patient patient)
+    {
+        if (string.IsNullOrWhiteSpace(patient.Phone))
+        {
+            ModelState.AddModelError("Phone", "Debes ingresar un numero de telefono.");
+        }
+        if (patient.Phone.Length != 10 || !patient.Phone.All(char.IsDigit))
+        {
+            ModelState.AddModelError("Phone", "El numero de telefono debe de tener exactamente 10 digitos.");
             return false;
         }
         return true;
