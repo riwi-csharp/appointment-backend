@@ -15,6 +15,8 @@ public class PatientController : Controller
     }
 
     //Este me trae todos los pacientes
+    
+    //METALE ASYNC
     public IActionResult Index()
     {
         var patient = _context.Patients.ToList();
