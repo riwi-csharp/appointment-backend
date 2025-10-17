@@ -1,4 +1,4 @@
-using MedicalSys.Data;
+using appointment_backend.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
