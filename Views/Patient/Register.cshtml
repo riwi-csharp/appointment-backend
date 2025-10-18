@@ -1,0 +1,51 @@
+﻿@model appointment_backend.Models.Patient
+
+@{
+ViewData["Title"] = "Registrar Paciente";
+}
+
+<div class="container mt-4">
+    <div class="card shadow p-4">
+        <h3 class="text-primary fw-bold mb-3">Registrar Paciente</h3>
+
+        @if (ViewBag.ErrorMessage != null)
+        {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+        }
+
+        <form asp-action="Register" method="post">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Nombre</label>
+                    <input asp-for="Name" class="form-control" placeholder="Ingresa el nombre completo" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Edad</label>
+                    <input asp-for="Age" type="number" class="form-control" placeholder="Edad" />
+                    <span asp-validation-for="Age" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Teléfono</label>
+                    <input asp-for="Phone" class="form-control" placeholder="10 dígitos" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-save"></i> Guardar
+                </button>
+                <a asp-action="Index" class="btn btn-secondary ms-2">
+                    <i class="bi bi-arrow-left"></i> Volver
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}
