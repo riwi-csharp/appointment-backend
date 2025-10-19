@@ -51,7 +51,7 @@
                                 Delete
                             </button>
                         </form>
-                        <a class="btn btn-outline-success btn-sm" asp-action="Test" asp-route-id="@item.PatientId" asp-controller="Appointment">Email</a>
+                        <a class="btn btn-outline-success btn-sm" asp-action="SendEmailAsync" asp-route-id="@item.PatientId" asp-controller="EmalService">Email</a>
                     </td>
                 </tr>
             }
