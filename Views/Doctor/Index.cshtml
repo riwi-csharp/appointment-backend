@@ -1,0 +1,46 @@
+﻿@model IEnumerable<appointment_backend.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Lista de Doctores";
+}
+
+<h2 class="mb-4">Lista de Doctores</h2>
+<p>
+    <a asp-action="Create" class="btn btn-primary">Agregar nuevo doctor</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Nombre</th>
+        <th>Documento</th>
+        <th>Tipo de Documento</th>
+        <th>Teléfono</th>
+        <th>Correo Electrónico</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model != null && Model.Any())
+    {
+        foreach (var doctor in Model)
+        {
+            <tr>
+                <td>@doctor.Name</td>
+                <td>@doctor.Document</td>
+                <td>@doctor.DocumentType?</td>
+                <td>@doctor.Phone</td>
+                <td>@doctor.Email</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@doctor.Id" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@doctor.Id" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr><td colspan="6" class="text-center">No hay doctores registrados.</td></tr>
+    }
+    </tbody>
+</table>

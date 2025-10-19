@@ -1,0 +1,44 @@
+﻿@model appointment_backend.Models.Doctor
+
+@{
+    ViewData["Title"] = "Editar Doctor";
+}
+
+<h2 class="mb-4">Editar Información del Doctor</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    
+    <div class="form-group mb-3">
+        <label asp-for="Name" class="form-label">Nombre</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group mb-3">
+        <label asp-for="Document" class="form-label">Documento</label>
+        <input asp-for="Document" class="form-control" />
+        <span asp-validation-for="Document" class="text-danger"></span>
+    </div>
+    
+    <div class="form-group mb-3">
+        <label asp-for="DocumentTypeId" class="form-label">Tipo de Documento</label>
+        <input asp-for="DocumentTypeId" class="form-control" />
+        <span asp-validation-for="DocumentTypeId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Phone" class="form-label">Teléfono</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="Email" class="form-label">Correo Electrónico</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Actualizar</button>
+    <a asp-action="Index" class="btn btn-secondary">Volver</a>
+</form>
