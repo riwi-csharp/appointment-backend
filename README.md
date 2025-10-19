@@ -258,6 +258,8 @@ erDiagram
         string Status
     }
 ```
+![Relational_Model](Docs/RelationalModel.png)
+
 
 ## Convenciones de configuración
 
