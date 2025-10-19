@@ -50,7 +50,7 @@
                                 Borrar
                             </button>
                         </form>
-                        <a class="btn btn-outline-success btn-sm" asp-action="EmailService.SendEmailAsync" asp-route-id="@item.PatientId" asp-controller="EmalService">Email</a>
+                        <a class="btn btn-outline-success btn-sm" asp-action="SendEmail" asp-route-id="@item.PatientId" asp-controller="Appointment">Send Email</a>
                     </td>
                 </tr>
                 
