@@ -1,0 +1,56 @@
+﻿@model IEnumerable<appointment_backend.Models.Patient>
+
+@{
+    ViewData["Title"] = "Pacientes";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-primary fw-bold">Lista de Pacientes</h2>
+
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+    }
+
+    <a asp-action="Register" class="btn btn-success mb-3">
+        <i class="bi bi-person-plus"></i> Registrar nuevo paciente
+    </a>
+
+    <table class="table table-hover table-bordered align-middle">
+        <thead class="table-dark text-center">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var patient in Model)
+        {
+            <tr class="text-center">
+                <td>@patient.Id</td>
+                <td>@patient.Name</td>
+                <td>@patient.Age</td>
+                <td>@patient.Phone</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <form asp-action="Edit" asp-route-id="@patient.Id" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-warning btn-sm">
+                                <i class="bi bi-pencil-square"></i> Editar
+                            </button>
+                        </form>
+                        <form asp-action="Delete" asp-route-id="@patient.Id" method="post" class="d-inline ms-2">
+                            <button type="submit" class="btn btn-danger btn-sm" 
+                                    onclick="return confirm('¿Estás seguro de eliminar este paciente?');">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
