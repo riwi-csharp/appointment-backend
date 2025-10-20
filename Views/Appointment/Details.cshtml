@@ -1,0 +1,45 @@
+@model appointment_backend.Models.Appointment
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    
+    <h3>Detalles de la cita de: @Model.Patient.Name</h3>
+    
+    @if(Model != null){
+        <div class="card shadow-sm border-2">
+            <div class="card-body">
+                <h4 class="card-title mb-4">Detalles de su cita médica en H.S.V.</h4>
+                <dl class="row">
+                    <dt class="col-sm-2">Nombre paciente:</dt>
+                    <dd class="col-sm-10">@Model.Patient.Name</dd>
+
+                    <dt class="col-sm-2">Nombre del doctor:</dt>
+                    <dd class="col-sm-10">@Model.Doctor.Name</dd>
+
+                    <dt class="col-sm-2">Fecha y hora de la cita:</dt>
+                    <dd class="col-sm-10">@Model.Date?.ToString("MM/dd/yyyy hh:mm tt")</dd>
+
+                    <dt class="col-sm-2">Estado de la cita:</dt>
+                    <dd class="col-sm-10">@Model.Status.Status</dd>
+
+                    <dt class="col-sm-2">Notas:</dt>
+                    <dd class="col-sm-10">@Model.Notes</dd>
+                </dl>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>No hay registros que mostrar.</p>
+    }
+    
+    <div>
+        <br>
+        <a class="btn btn-outline-primary" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <a class="btn btn-outline-secondary" asp-action="Index">Regresar</a>
+    </div>
+    
+</div>
