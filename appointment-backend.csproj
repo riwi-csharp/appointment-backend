@@ -25,4 +25,11 @@
       <Folder Include="Docs\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Doctor\Create.cshtml" />
+      <AdditionalFiles Include="Views\Doctor\Edit.cshtml" />
+      <AdditionalFiles Include="Views\Doctor\Index.cshtml" />
+      <AdditionalFiles Include="Views\Doctor\Register.cshtml" />
+    </ItemGroup>
+
 </Project>

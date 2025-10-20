@@ -1,19 +1,19 @@
-﻿@model appointment_backend.Models.Patient
+﻿@model appointment_backend.Models.Doctor
 
 @{
-    ViewData["Title"] = "Registrar Paciente";
+    ViewData["Title"] = "Registrar Doctor";
 }
 
 <div class="container mt-4">
     <div class="card shadow p-4">
-        <h3 class="text-primary fw-bold mb-3">Registrar Paciente</h3>
+        <h3 class="text-primary fw-bold mb-3">Registrar Doctor</h3>
 
         @if (ViewBag.ErrorMessage != null)
         {
             <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
         }
 
-        <form asp-action="Register" asp-controller="Patient" method="post">
+        <form asp-action="Register" asp-controller="Doctor" method="post">
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
             <div class="row mb-3">
@@ -23,14 +23,8 @@
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label fw-semibold">Edad</label>
-                    <input asp-for="Age" type="number" class="form-control" placeholder="Edad" />
-                </div>
-
-                <div class="col-md-3">
                     <label class="form-label fw-semibold">Teléfono</label>
                     <input asp-for="Phone" class="form-control" placeholder="10 dígitos" />
-                    <span asp-validation-for="Phone" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-3">
@@ -47,6 +41,14 @@
                     </select>
                 </div>
 
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Especialidad</label>
+                    <select asp-for="SpecialityId"
+                            class="form-select"
+                            asp-items="@(ViewData["SpecialityId"] as SelectList)">
+                        <option value="">Seleccione...</option>
+                    </select>
+                </div>
                 
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Correo</label>

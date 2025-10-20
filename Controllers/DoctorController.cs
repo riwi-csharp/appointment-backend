@@ -1,6 +1,7 @@
 using appointment_backend.Data;
 using appointment_backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace appointment_backend.Controllers;
@@ -14,59 +15,111 @@ public class DoctorController : Controller
     {
         _context = context;
     }
-
+    
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        await GetAll();
-        return View();
-    }
-    
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
         try
         {
-            var doctors = await _context.Doctors.ToListAsync();
-            TempData["SuccessMessage"] = "All doctors were found";
-            return RedirectToAction("Index", doctors);
+            var doctors = await _context.Doctors.Include(d=> d.DocumentType).ToListAsync();
+
+            // Puedes usar ViewBag si quieres mostrar un mensaje en la vista
+            ViewBag.SuccessMessage = "Lista de doctores cargada correctamente";
+
+            // Devuelves la vista junto con la lista como modelo
+            return View(doctors);
         }
         catch (HttpRequestException e)
         {
-            TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+            ViewBag.ErrorMessage = $"Error de conexión: {e.Message}";
+            return View(new List<Doctor>()); // Devuelve vista vacía
         }
         catch (Exception e)
         {
-            TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+            ViewBag.ErrorMessage = $"Error inesperado: {e.Message}";
+            return View(new List<Doctor>());
         }
-        return RedirectToAction("Index", null);
+    }
+
+
+    // CODIGO DE JAVIER
+    // [HttpGet]
+    // public async Task<IActionResult> Index()
+    // {
+    //     await GetAll();
+    //     return View();
+    // }
+    //
+    // [HttpGet]
+    // public async Task<IActionResult> GetAll()
+    // {
+    //     try
+    //     {
+    //         var doctors = await _context.Doctors.ToListAsync();
+    //         TempData["SuccessMessage"] = "All doctors were found";
+    //         return RedirectToAction("Index", doctors);
+    //     }
+    //     catch (HttpRequestException e)
+    //     {
+    //         TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+    //     }
+    //     return RedirectToAction("Index", null);
+    // }
+    
+    public IActionResult Register()
+    {
+        ViewData["DocumentTypeId"] = new SelectList(_context.DocumentTypes, "Id", "Type");
+        ViewData["SpecialityId"] = new SelectList(_context.Specialities, "Id", "Name");
+        
+        return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(Doctor doctor)
+    public async Task<IActionResult> Register(Doctor doctor)
     {
+        // Verifica si el modelo cumple con las validaciones de DataAnnotations
+        if (!ModelState.IsValid)
+        {
+            ViewData["DocumentTypeId"] = new SelectList(_context.DocumentTypes, "Id", "Type");
+            ViewData["SpecialityId"] = new SelectList(_context.Specialities, "Id", "Name");
+            return View(doctor);
+        }
+
         try
         {
-            if (_context.Doctors.AnyAsync(d => d.Document == doctor.Document) != null)
+            // ✅ Verifica si ya existe un doctor con el mismo documento
+            bool exists = await _context.Doctors.AnyAsync(d => d.Document == doctor.Document);
+            if (exists)
             {
-                ModelState.AddModelError("DocumentAlreadyExists", "Doctor Document already exists");
-                return RedirectToAction("Index");
+                ModelState.AddModelError("Document", "El número de documento ya está registrado.");
+                ViewData["DocumentTypeId"] = new SelectList(_context.DocumentTypes, "Id", "Type");
+                ViewData["SpecialityId"] = new SelectList(_context.Specialities, "Id", "Name");
+                return View(doctor); // Mantiene los datos y muestra el mensaje
             }
+
+            // ✅ Guarda el nuevo doctor
             _context.Doctors.Add(doctor);
             await _context.SaveChangesAsync();
-            TempData["SuccessMessage"] = "Doctor was created";
+
+            TempData["SuccessMessage"] = "El doctor fue registrado correctamente.";
+            return RedirectToAction("Index");
         }
         catch (HttpRequestException e)
         {
-            TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+            TempData["ErrorMessage"] = $"Error de conexión: {e.Message}";
+            return RedirectToAction("Index");
         }
         catch (Exception e)
         {
-            TempData["ErrorMessage"] = $"ERROR: {e.Message}";
+            TempData["ErrorMessage"] = $"Error inesperado: {e.Message}";
+            return RedirectToAction("Index");
         }
-        return RedirectToAction("Index");
-        
     }
+
     
     //Jhos Edit / Delete
     public async Task<IActionResult> Edit(Doctor doctor)
