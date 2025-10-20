@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace appointment_backend.Models
 {
@@ -11,17 +12,21 @@ namespace appointment_backend.Models
 
         [Required]
         public int? DoctorId { get; set; }    
+        [ValidateNever]
         public Doctor? Doctor { get; set; }   
 
         [Required]
         public int? PatientId { get; set; }   
+        [ValidateNever]
         public Patient? Patient { get; set; } 
 
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime? Date { get; set; }
 
-        public string Status { get; set; } = "Scheduled";
+        public int StatusId { get; set; }
+        [ValidateNever]
+        public AppointmentStatus Status { get; set; }
 
         public string? Notes { get; set; }
     }

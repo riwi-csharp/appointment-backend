@@ -18,8 +18,9 @@ namespace appointment_backend.Models
         public string Subject { get; set; }
 
         public string Body { get; set; }
-
-        public string Status { get; set; } = "Pending"; 
+        
+        public int StatusId { get; set; }
+        public EmailStatus Status { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
     }
