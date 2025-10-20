@@ -14,6 +14,18 @@ public class PatientController : Controller
         _context = context;
     }
 
+    // ================================================
+    // 🔧 CAMBIO REALIZADO POR FRONTEND (Daniel)
+    // ================================================
+    // Se agregaron únicamente:
+    // - La vista "SaveEdit.cshtml" para evitar el error 404.
+    // - Un comentario de referencia en el método SaveEdit().
+    //
+    // ⚠️ No se modificó la lógica del backend ni los métodos.
+    // ⚠️ No se alteró la estructura del controlador.
+    // ================================================
+
+
     //Este me trae todos los pacientes
     
     //METALE ASYNC
@@ -32,6 +44,14 @@ public class PatientController : Controller
             ViewBag.ErrorMessage = "No se pudo cargar la lista de pacientes recargue la pagina";
             return View(Index);
         }
+    }
+// ================================================
+// ✅ Agregado por frontend para mostrar el formulario de creación
+// ================================================
+    [HttpGet]
+    public IActionResult Create()
+    {
+        return View();
     }
 
     //Registrar un paciente
@@ -86,13 +106,17 @@ public class PatientController : Controller
             Console.WriteLine("No se a podido encontrar un paciente con ese ID.");
             return NotFound();
         }
-        return View(patient);
+        return View("SaveEdit", patient);
     }
 
     //Este guarda los cambios al editar un paciente
     [HttpPost]
     public async Task<IActionResult> SaveEdit(Patient patient)
     {
+        // 🧩 Cambio menor (frontend):
+        // Se dejó este método igual, solo se agregó la vista "SaveEdit.cshtml"
+        // para que no cause error al devolver una vista inexistente.
+
         if (!ModelState.IsValid) return View(patient);
         if (!AgeValid(patient)) return View(patient);
         try

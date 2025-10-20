@@ -1,0 +1,79 @@
+﻿@model appointment_backend.Models.Patient
+
+@{
+    ViewData["Title"] = "Editar Paciente";
+}
+
+<!-- =============================================
+     ✏️ VISTA: EDITAR PACIENTE
+     =============================================
+     - Formulario para editar datos de un paciente.
+     - Envía los cambios al método POST SaveEdit.
+     - Mantiene los estilos Bootstrap y validaciones.
+     ============================================= -->
+
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-header bg-warning text-dark fw-bold">
+            <h3 class="mb-0">Editar Paciente</h3>
+        </div>
+
+        <div class="card-body">
+            <!-- Muestra error si existe -->
+            @if (ViewBag.ErrorMessage != null)
+            {
+                <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+            }
+
+            <!-- 🔥 Enviar datos al método SaveEdit -->
+            <form asp-action="SaveEdit" method="post">
+                <!-- ID oculto -->
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Campo: Nombre -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label asp-for="Name" class="form-label fw-semibold">Nombre</label>
+                        <input asp-for="Name" class="form-control" placeholder="Ingrese el nombre completo" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <!-- Campo: Edad -->
+                    <div class="col-md-3">
+                        <label asp-for="Age" class="form-label fw-semibold">Edad</label>
+                        <input asp-for="Age" type="number" class="form-control" placeholder="Edad" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+
+                    <!-- Campo: Teléfono -->
+                    <div class="col-md-3">
+                        <label asp-for="Phone" class="form-label fw-semibold">Teléfono</label>
+                        <input asp-for="Phone" class="form-control" placeholder="Ej: 3001234567" />
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Campo: Correo electrónico -->
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold">Correo electrónico</label>
+                    <input asp-for="Email" type="email" class="form-control" placeholder="Ej: paciente@gmail.com" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <!-- Botones -->
+                <div class="text-end">
+                    <button type="submit" class="btn btn-warning me-2">
+                        <i class="bi bi-pencil-square"></i> Guardar Cambios
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
