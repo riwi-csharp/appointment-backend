@@ -286,3 +286,32 @@ dotnet ef migrations add InitialCreate
 
 dotnet ef database update
 ```
+
+
+
+## FRONT 
+
+- Instalar dependencias segun la version dada por el back 
+- dotnet add package Microsoft.EntityFrameworkCore --version 8.0.10
+- dotnet add package Pomelo.EntityFrameworkCore.Mysql --version 8.0.10
+- dotnet add package microsoft.EntityFrameworkCore.design --version 8.0.10
+
+
+## Agregar informacion a la tabla 
+   - INSERT INTO DocumentTypes (Type) VALUES
+    ('Cédula de Ciudadanía'),
+    ('Cédula de Extranjería'),
+    ('Pasaporte'),
+    ('Tarjeta de Identidad');
+
+
+## agregar informacion tabla  Specialities
+
+- INSERT INTO Specialities (Id, Name) VALUES
+  (1, 'Medicina General'),
+  (2, 'Cardiología'),
+  (3, 'Odontología'),
+  (4, 'Pediatría'),
+  (5, 'Dermatología');
+
+edijero
