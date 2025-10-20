@@ -6,7 +6,7 @@
 
 <h2 class="mb-4">Editar Información del Doctor</h2>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Update" method="post">
     <input type="hidden" asp-for="Id" />
     
     <div class="form-group mb-3">
@@ -15,18 +15,32 @@
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
     
-    <div class="form-group mb-3">
-        <label asp-for="Document" class="form-label">Documento</label>
-        <input asp-for="Document" class="form-control" />
-        <span asp-validation-for="Document" class="text-danger"></span>
+    <div class="mb-3">
+        <label for="DocumentTypeId" class="form-label fw-semibold">Tipo de Documento (ID)</label>
+                           
+        <select name="DocumentTypeId" class="form-select" required>
+           
+            @if (ViewBag.DocumentTypes != null)
+            {
+                foreach (var tipo in ViewBag.DocumentTypes)
+                {
+                    <option value="@tipo.Id">@tipo.Type</option>
+                }
+            }
+        </select>
+        @* <td>@doctor.DocumentType.Type</td> *@
+        @* <td>@doctor.Speciality.Name</td> *@
     </div>
-    
-    <div class="form-group mb-3">
-        <label asp-for="DocumentTypeId" class="form-label">Tipo de Documento</label>
-        <input asp-for="DocumentTypeId" class="form-control" />
-        <span asp-validation-for="DocumentTypeId" class="text-danger"></span>
+    <div class="mb-3">
+        <label for="SpecialityId" class="form-label fw-semibold">Especialidad (ID)</label>
+        <select name="SpecialityId" id="SpecialityId" class="form-select" required>
+            
+            @foreach (var esp in ViewBag.Specialities)
+            {
+                <option value="@esp.Id">@esp.Name</option>
+            }
+        </select>
     </div>
-
     <div class="form-group mb-3">
         <label asp-for="Phone" class="form-label">Teléfono</label>
         <input asp-for="Phone" class="form-control" />
