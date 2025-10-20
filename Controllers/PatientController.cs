@@ -1,6 +1,7 @@
 using appointment_backend.Data;
 using appointment_backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace appointment_backend.Controllers;
@@ -23,7 +24,8 @@ public class PatientController : Controller
     {
         try
         {
-            var patients = await _context.Patients.ToListAsync();
+            var patients = await _context.Patients
+                .Include(p => p.DocumentType).ToListAsync();
             return View(patients);
         }
         catch (Exception e)
@@ -34,13 +36,39 @@ public class PatientController : Controller
         }
     }
 
+
+    public IActionResult Register()
+    {
+        ViewData["DocumentTypeId"] = new SelectList(_context.DocumentTypes, "Id", "Type");
+        return View();
+    }
+    
     //Registrar un paciente
     //Si el modelo no es valido, vuelve a mostrar la vista del formulario con los mismos datos que el usuario ingreso.
-    [HttpPost]
+    [HttpPost] // CAMBIADO POR SERGIO
     public async Task<IActionResult> Register(Patient patient)
     {
-        if (!ModelState.IsValid) return View(patient);
-        if (!AgeValid(patient)) return View(patient);
+        
+        if (!ModelState.IsValid)
+        {
+            ViewData["DocumentTypeId"] = new SelectList(_context.DocumentTypes, "Id", "Type");
+            return View(patient);
+        }
+        
+        // TODO
+        // var patientDocExists = await _context.Patients.AnyAsync(p => p.Document == patient.Document);
+        //
+        // if (!patientDocExists)
+        // {
+        //     TempData["ErrorMessage"] = $"el documento '{patient.Document}' ya existe. Intenta con otro numero.'";
+        // }
+        
+        
+        if (!AgeValid(patient))
+        {
+            ViewData["DocumentTypeId"] = new SelectList(_context.DocumentTypes, "Id", "Type");
+            return View(patient);
+        }
 
         try
         {
@@ -50,12 +78,13 @@ public class PatientController : Controller
         }
         catch (Exception e)
         {
-            System.Console.WriteLine($"El paciente no se ha podido guardar el la base de datos\nError{e}");
-            ViewBag.ErrorMessage = "No se pudo registrar el paciente, intente de nuevo";
+            Console.WriteLine($"Error al guardar paciente: {e}");
+            ViewBag.ErrorMessage = "No se pudo registrar el paciente, intente de nuevo.";
+            ViewData["DocumentTypeId"] = new SelectList(_context.DocumentTypes, "Id", "Type");
             return View(patient);
         }
-        return RedirectToAction("Index");
     }
+
 
     //Eliminar un paciente
     [HttpPost]
